@@ -1,14 +1,16 @@
-import { Component } from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'angularchart';
 
-  // lineChart
+  @ViewChild('localChart') canvas: ElementRef;
+
+// lineChart
   public lineChartData: Array<any> = [
     {data: [65, 59, 80, 81, 56, 55, 40, 30, 20, 10, 5, 15], label: 'Series A', tension: 0,
       pointHoverRadius: 8, pointRadius: 0, pointHitRadius: 10}
@@ -18,11 +20,23 @@ export class AppComponent {
   public lineChartOptions = {
     responsive: false,
     scales : {
-      xAxes : [ {
+      xAxes : [{
         gridLines : {
           display : false
+        },
+        ticks: {
+          fontColor: 'rgba(205,205,205)',
+          fontFamily: 'Verdana',
+          fontStyle: 'Bold'
         }
-      } ]},
+      }],
+      yAxes: [{
+        ticks: {
+          fontColor: 'rgba(205,205,205)',
+          fontFamily: 'Verdana',
+          fontStyle: 'Bold'
+        }
+      }]},
     tooltips: {
       enabled: true,
       callbacks: {
@@ -82,5 +96,11 @@ export class AppComponent {
     console.log(e);
   }
 
+  ngOnInit() {
+    const gradient = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 200);
+    gradient.addColorStop(0, 'rgba(222,247,206, 0.6)');
+    gradient.addColorStop(1, 'rgba(184,224,188, 0.6)');
+    this.lineChartColors[0].backgroundColor = gradient;
+  }
 
 }
